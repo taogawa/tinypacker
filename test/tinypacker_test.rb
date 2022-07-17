@@ -2,12 +2,12 @@
 
 require "test_helper"
 
-class TinypackerTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::Tinypacker::VERSION
+class ManifestTest < Minitest::Test
+  def setup
+    @manifest = Tinypacker::Manifest.new("test/manifest.json")
   end
 
-  def test_it_does_something_useful
-    assert false
+  def test_lookup
+    assert_equal "/packs/js/application-12345.js", @manifest.lookup("application.js")
   end
 end
