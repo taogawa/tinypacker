@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "tinypacker/version"
+require "rails/engine"
 require "json"
 
 module Tinypacker
@@ -43,6 +44,18 @@ module Tinypacker
         manifest.lookup(name)
       end
       javascript_include_tag(*sources, **options)
+    end
+  end
+
+  class Engine < ::Rails::Engine
+    initializer "tinypacker.helper" do
+      ActiveSupport.on_load :action_controller do
+        ActionController::Base.helper Tinypacker::Helper
+      end
+
+      ActiveSupport.on_load :action_view do
+        include Tinypacker::Helper
+      end
     end
   end
 end
