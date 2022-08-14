@@ -12,8 +12,8 @@ module Tinypacker
   class Error < StandardError; end
 
   class Manifest
-    def initialize(path)
-      load(path)
+    def initialize(configuration)
+      load(configuration.manifest_path)
     end
 
     def lookup(name)
@@ -30,10 +30,41 @@ module Tinypacker
   class Instance
     attr_reader :root_path, :manifest_path, :manifest
 
-    def initialize
-      @root_path = Rails.root
-      @manifest_path = Rails.root.join("public/packs/manifest.json")
-      @manifest = Tinypacker::Manifest.new(@manifest_path)
+    def initialize(root_path: Rails.root, env: Rails.env)
+      @root_path = root_path
+      configuration = Tinypacker::Configuration.new(root_path: root_path, env: env)
+      @manifest_path = configuration.manifest_path
+      @manifest = Tinypacker::Manifest.new(configuration)
+    end
+  end
+
+  class Configuration
+    attr_reader :root_path, :config_path
+
+    def initialize(root_path:, env: Rails.env)
+      @root_path = root_path
+      @config_path = root_path.join("config/tinypacker.yml")
+      @env = env
+      load(@config_path)
+    end
+
+    def manifest_path
+      @root_path.join(@data.fetch(:manifest_path)).to_s
+    end
+
+    private
+
+    def load(config_path)
+      config = begin
+        YAML.load_file(config_path.to_s, aliases: true)
+      rescue ArgumentError
+        YAML.load_file(config_path.to_s)
+      end
+      @data = config[@env].deep_symbolize_keys
+    rescue Errno::ENOENT => e
+      raise Tinypacker::Error, "Tinypacker configuration file not found #{config_path}. Error: #{e.message}"
+    rescue Psych::SyntaxError => e
+      raise Tinypacker::Error, "YAML syntax error occurred while parsing #{config_path}. Error: #{e.message}"
     end
   end
 

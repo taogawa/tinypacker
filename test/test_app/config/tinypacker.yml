@@ -1,0 +1,11 @@
+default: &default
+  manifest_path: public/packs/manifest.json
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

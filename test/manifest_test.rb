@@ -4,7 +4,11 @@ require "test_helper"
 
 class ManifestTest < Minitest::Test
   def setup
-    @manifest = Tinypacker::Manifest.new(Rails.root.join("public/packs/manifest.json"))
+    configuration = Tinypacker::Configuration.new(
+      root_path: Pathname.new(File.expand_path("test_app", __dir__)),
+      env: "production"
+    )
+    @manifest = Tinypacker::Manifest.new(configuration)
   end
 
   def test_lookup
