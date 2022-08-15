@@ -14,4 +14,8 @@ class ConfigurationTest < Minitest::Test
     manifest_path = File.expand_path File.join(File.dirname(__FILE__), "test_app/public/packs/manifest.json")
     assert_equal @configuration.manifest_path, manifest_path
   end
+
+  def test_cache_manifest?
+    assert_equal @configuration.cache_manifest?, true
+  end
 end

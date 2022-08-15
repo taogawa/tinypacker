@@ -13,17 +13,25 @@ module Tinypacker
 
   class Manifest
     def initialize(configuration)
-      load(configuration.manifest_path)
+      @configuration = configuration
     end
 
     def lookup(name)
-      @data[name.to_s]
+      data[name.to_s]
     end
 
     private
 
-    def load(path)
-      @data = JSON.parse(File.read(path))
+    def load
+      JSON.parse(File.read(@configuration.manifest_path))
+    end
+
+    def data
+      if @configuration.cache_manifest?
+        @data ||= load
+      else
+        @data = load
+      end
     end
   end
 
@@ -50,6 +58,10 @@ module Tinypacker
 
     def manifest_path
       @root_path.join(@data.fetch(:manifest_path)).to_s
+    end
+
+    def cache_manifest?
+      !!@data.fetch(:cache_manifest)
     end
 
     private

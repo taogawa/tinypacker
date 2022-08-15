@@ -3,9 +3,12 @@ default: &default
 
 development:
   <<: *default
+  cache_manifest: false
 
 test:
   <<: *default
+  cache_manifest: false
 
 production:
   <<: *default
+  cache_manifest: true
