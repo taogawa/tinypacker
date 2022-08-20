@@ -12,3 +12,8 @@ test:
 production:
   <<: *default
   cache_manifest: true
+
+# for testing
+error:
+  manifest_path: public/packs/missing.json
+  cache_manifest: false

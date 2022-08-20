@@ -17,13 +17,15 @@ module Tinypacker
     end
 
     def lookup(name)
-      data[name.to_s]
+      data[name.to_s].presence
     end
 
     private
 
     def load
       JSON.parse(File.read(@configuration.manifest_path))
+    rescue Errno::ENOENT => e
+      raise Tinypacker::Error, "manifest file not found #{@configuration.manifest_path}. Error: #{e.message}"
     end
 
     def data
