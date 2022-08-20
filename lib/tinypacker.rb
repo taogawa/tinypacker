@@ -53,7 +53,7 @@ module Tinypacker
       @root_path = root_path
       @config_path = root_path.join("config/tinypacker.yml")
       @env = env
-      load(@config_path)
+      @data = load(@config_path)
     end
 
     def manifest_path
@@ -72,7 +72,7 @@ module Tinypacker
       rescue ArgumentError
         YAML.load_file(config_path.to_s)
       end
-      @data = config[@env].deep_symbolize_keys
+      config[@env].deep_symbolize_keys
     rescue Errno::ENOENT => e
       raise Tinypacker::Error, "Tinypacker configuration file not found #{config_path}. Error: #{e.message}"
     rescue Psych::SyntaxError => e
