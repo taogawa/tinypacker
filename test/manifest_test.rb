@@ -25,7 +25,7 @@ class ManifestTest < Minitest::Test
       env: "error"
     )
     manifest = Tinypacker::Manifest.new(configuration)
-    assert_raises Tinypacker::Error do
+    assert_raises Tinypacker::Manifest::FileNotFoundError do
       manifest.lookup("foo")
     end
   end

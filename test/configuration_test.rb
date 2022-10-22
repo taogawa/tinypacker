@@ -18,4 +18,10 @@ class ConfigurationTest < Minitest::Test
   def test_cache_manifest?
     assert_equal @configuration.cache_manifest?, true
   end
+
+  def test_config_file_not_found
+    assert_raises Tinypacker::Configuration::FileNotFoundError do
+      Tinypacker::Configuration.new(root_path: Pathname.new(__dir__), env: "error")
+    end
+  end
 end
