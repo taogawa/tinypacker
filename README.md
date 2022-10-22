@@ -18,9 +18,27 @@ Or install it yourself as:
 
     $ gem install tinypacker
 
+Finally, run the following to install 
+
+    $ bundle exec rails tinypacker:install
+
 ## Usage
 
-TODO: Write usage instructions here
+As with Webpacker, an asset manifest file is required to use Tinypacker. You need to specify the path of the asset manifest file in `manifest_path` of `tinypacker.yml`.
+
+The format of the asset manifest file is as follows:
+
+```json
+{
+  "application.js": "/packs/js/application-12345.js",
+}
+```
+
+And on the view file, you can use `javascript_pack_tag`.
+
+```
+<%= javascript_pack_tag 'application.js' %>
+```
 
 ## Development
 
@@ -30,7 +48,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/tinypacker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/tinypacker/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/taogawa/tinypacker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/taogawa/tinypacker/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -38,4 +56,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Tinypacker project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/tinypacker/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Tinypacker project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/taogawa/tinypacker/blob/main/CODE_OF_CONDUCT.md).
