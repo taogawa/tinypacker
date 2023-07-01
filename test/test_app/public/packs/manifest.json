@@ -1,6 +1,8 @@
 {
   "application.js": "/packs/js/application-12345.js",
   "application.js.map": "/packs/js/application-12345.js.map",
+  "application.css": "/packs/css/application-12345.css",
+  "application.css.map": "/packs/css/application-12345.css.map",
   "entrypoints": {
     "application": {
       "js": [
@@ -8,6 +10,12 @@
       ],
       "js.map": [
         "/packs/js/application-12345.js.map"
+      ],
+      "css": [
+        "/packs/css/application-12345.css"
+      ],
+      "css.map": [
+        "/packs/css/application-12345.css.map"
       ]
     }
   }

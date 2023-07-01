@@ -12,4 +12,12 @@ class HelperTest < ActionView::TestCase
   def test_javascript_pack_tag_without_extname
     assert_equal '<script src="/packs/js/application-12345.js"></script>', javascript_pack_tag("application")
   end
+
+  def test_stylesheet_pack_tag
+    assert_equal '<link rel="stylesheet" href="/packs/css/application-12345.css" media="screen" />', stylesheet_pack_tag("application.css")
+  end
+
+  def test_stylesheet_pack_tag_without_extname
+    assert_equal '<link rel="stylesheet" href="/packs/css/application-12345.css" media="screen" />', stylesheet_pack_tag("application")
+  end
 end

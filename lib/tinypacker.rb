@@ -106,6 +106,14 @@ module Tinypacker
       end
       javascript_include_tag(*sources, **options)
     end
+
+    def stylesheet_pack_tag(*names, **options)
+      manifest = Tinypacker.instance.manifest
+      sources = names.map do |name|
+        manifest.lookup(name, :stylesheet)
+      end
+      stylesheet_link_tag(*sources, **options)
+    end
   end
 
   class Engine < ::Rails::Engine
