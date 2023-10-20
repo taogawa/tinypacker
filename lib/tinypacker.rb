@@ -16,8 +16,8 @@ module Tinypacker
       @configuration = configuration
     end
 
-    def lookup(name, type)
-      data[full_pack_name(name.to_s, type)].presence
+    def lookup(name)
+      data[name.to_s].presence
     end
 
     private
@@ -33,19 +33,6 @@ module Tinypacker
         @data ||= load
       else
         @data = load
-      end
-    end
-    
-    def full_pack_name(name, pack_type)
-      return name unless File.extname(name.to_s).empty?
-      "#{name}.#{manifest_type(pack_type)}"
-    end
-
-    def manifest_type(pack_type)
-      case pack_type
-      when :javascript then "js"
-      when :stylesheet then "css"
-      else pack_type.to_s
       end
     end
   end
@@ -102,7 +89,7 @@ module Tinypacker
     def javascript_pack_tag(*names, **options)
       manifest = Tinypacker.instance.manifest
       sources = names.map do |name|
-        manifest.lookup(name, :javascript)
+        manifest.lookup(full_pack_name(name, :javascript))
       end
       javascript_include_tag(*sources, **options)
     end
@@ -110,9 +97,24 @@ module Tinypacker
     def stylesheet_pack_tag(*names, **options)
       manifest = Tinypacker.instance.manifest
       sources = names.map do |name|
-        manifest.lookup(name, :stylesheet)
+        manifest.lookup(full_pack_name(name, :stylesheet))
       end
       stylesheet_link_tag(*sources, **options)
+    end
+
+    private
+
+    def full_pack_name(name, pack_type=nil)
+      return name unless File.extname(name.to_s).empty?
+      "#{name}.#{manifest_type(pack_type)}"
+    end
+
+    def manifest_type(pack_type)
+      case pack_type
+      when :javascript then "js"
+      when :stylesheet then "css"
+      else pack_type.to_s
+      end
     end
   end
 

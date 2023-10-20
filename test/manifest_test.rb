@@ -12,11 +12,11 @@ class ManifestTest < Minitest::Test
   end
 
   def test_lookup
-    assert_equal "/packs/js/application-12345.js", @manifest.lookup("application.js", :javascript)
+    assert_equal "/packs/js/application-12345.js", @manifest.lookup("application.js")
   end
 
   def test_lookup_key_not_found
-    assert_nil @manifest.lookup("foo", :javascript)
+    assert_nil @manifest.lookup("foo")
   end
 
   def test_manifest_file_not_found
@@ -26,7 +26,7 @@ class ManifestTest < Minitest::Test
     )
     manifest = Tinypacker::Manifest.new(configuration)
     assert_raises Tinypacker::Manifest::FileNotFoundError do
-      manifest.lookup("foo", :javascript)
+      manifest.lookup("foo")
     end
   end
 end
