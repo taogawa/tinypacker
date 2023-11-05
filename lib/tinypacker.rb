@@ -2,6 +2,7 @@
 
 require_relative "tinypacker/version"
 require "rails/engine"
+require "active_support"
 require "json"
 
 module Tinypacker
