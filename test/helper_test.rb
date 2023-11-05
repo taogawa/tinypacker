@@ -20,4 +20,12 @@ class HelperTest < ActionView::TestCase
   def test_stylesheet_pack_tag_without_extname
     assert_equal '<link rel="stylesheet" href="/packs/css/application-12345.css" media="screen" />', stylesheet_pack_tag("application")
   end
+
+  def test_asset_pack_path
+    assert_equal "/packs/css/application-12345.css", asset_pack_path("application.css")
+  end
+
+  def test_asset_pack_url
+    assert_equal "http://test.host/packs/css/application-12345.css", asset_pack_url("application.css")
+  end
 end

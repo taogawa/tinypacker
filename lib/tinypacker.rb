@@ -102,6 +102,16 @@ module Tinypacker
       stylesheet_link_tag(*sources, **options)
     end
 
+    def asset_pack_path(name, **options)
+      manifest = Tinypacker.instance.manifest
+      path_to_asset(manifest.lookup(full_pack_name(name, :stylesheet)), **options)
+    end
+
+    def asset_pack_url(name, **options)
+      manifest = Tinypacker.instance.manifest
+      url_to_asset(manifest.lookup(full_pack_name(name)), **options)
+    end
+
     private
 
     def full_pack_name(name, pack_type=nil)
