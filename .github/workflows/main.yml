@@ -43,7 +43,11 @@ jobs:
         cache-version: ${{ matrix.gemfile }}
     - name: Install dependencies
       run: |
-        gem update --system
+        if [ "${{matrix.ruby}}" = "2.7" ]; then
+          gem update --system 3.4.22
+        else
+          gem update --system
+        fi
         gem install bundler --no-document
         bundle install --jobs 4 --retry 3
     - name: Run test
