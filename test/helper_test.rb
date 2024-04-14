@@ -9,6 +9,7 @@ class HelperTest < ActionView::TestCase
 
   def setup
     @request = Class.new do
+      def send_early_hints(links) end
       def base_url
         "https://example.com"
       end
