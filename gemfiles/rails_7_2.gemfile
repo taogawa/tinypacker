@@ -1,0 +1,7 @@
+source "https://rubygems.org"
+
+eval_gemfile('../Gemfile')
+
+gem "rails", "~> 7.2.0"
+
+gemspec path: '../'
