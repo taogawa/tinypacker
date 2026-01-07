@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "tinypacker/version"
-require "rails/engine"
 require "active_support"
+require "rails/engine"
 require "json"
 
 module Tinypacker
