@@ -16,7 +16,9 @@ class ManifestTest < Minitest::Test
   end
 
   def test_lookup_key_not_found
-    assert_nil @manifest.lookup("foo")
+    assert_raises Tinypacker::Manifest::MissingEntryError do
+      @manifest.lookup("foo")
+    end
   end
 
   def test_manifest_file_not_found
@@ -27,6 +29,17 @@ class ManifestTest < Minitest::Test
     manifest = Tinypacker::Manifest.new(configuration)
     assert_raises Tinypacker::Manifest::FileNotFoundError do
       manifest.lookup("foo")
+    end
+  end
+
+  def test_invalid_manifest_file
+    configuration = Tinypacker::Configuration.new(
+      root_path: Pathname.new(File.expand_path("test_app", __dir__)),
+      env: "invalid_manifest"
+    )
+    manifest = Tinypacker::Manifest.new(configuration)
+    assert_raises Tinypacker::Manifest::InvalidManifestError do
+      manifest.lookup("application.js")
     end
   end
 end

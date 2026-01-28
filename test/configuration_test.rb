@@ -24,4 +24,13 @@ class ConfigurationTest < Minitest::Test
       Tinypacker::Configuration.new(root_path: Pathname.new(__dir__), env: "error")
     end
   end
+
+  def test_missing_environment
+    assert_raises Tinypacker::Configuration::MissingEnvironmentError do
+      Tinypacker::Configuration.new(
+        root_path: Pathname.new(File.expand_path("test_app", __dir__)),
+        env: "nonexistent_env"
+      )
+    end
+  end
 end

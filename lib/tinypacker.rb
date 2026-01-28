@@ -12,13 +12,15 @@ module Tinypacker
 
   class Manifest
     class FileNotFoundError < ::StandardError; end
+    class InvalidManifestError < ::StandardError; end
+    class MissingEntryError < ::StandardError; end
 
     def initialize(configuration)
       @configuration = configuration
     end
 
     def lookup(name)
-      data[name.to_s].presence
+      data[name.to_s].presence || raise(Tinypacker::Manifest::MissingEntryError, "asset '#{name}' not found in manifest #{@configuration.manifest_path}")
     end
 
     private
@@ -27,6 +29,8 @@ module Tinypacker
       JSON.parse(File.read(@configuration.manifest_path))
     rescue Errno::ENOENT => e
       raise Tinypacker::Manifest::FileNotFoundError, "manifest file not found #{@configuration.manifest_path}. Error: #{e.message}"
+    rescue JSON::ParserError => e
+      raise Tinypacker::Manifest::InvalidManifestError, "invalid manifest file #{@configuration.manifest_path}. Error: #{e.message}"
     end
 
     def data
@@ -52,6 +56,7 @@ module Tinypacker
   class Configuration
     class FileNotFoundError < ::StandardError; end
     class SyntaxError < ::StandardError; end
+    class MissingEnvironmentError < ::StandardError; end
 
     attr_reader :root_path, :config_path
 
@@ -78,7 +83,9 @@ module Tinypacker
       rescue ArgumentError
         YAML.load_file(config_path.to_s)
       end
-      config[@env].deep_symbolize_keys
+      env_config = config[@env]
+      raise Tinypacker::Configuration::MissingEnvironmentError, "environment '#{@env}' not found in #{config_path}" if env_config.nil?
+      env_config.deep_symbolize_keys
     rescue Errno::ENOENT => e
       raise Tinypacker::Configuration::FileNotFoundError, "Tinypacker configuration file not found #{config_path}. Error: #{e.message}"
     rescue Psych::SyntaxError => e

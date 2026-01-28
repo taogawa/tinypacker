@@ -17,3 +17,7 @@ production:
 error:
   manifest_path: public/packs/missing.json
   cache_manifest: false
+
+invalid_manifest:
+  manifest_path: public/packs/invalid.json
+  cache_manifest: false
