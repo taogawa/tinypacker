@@ -105,7 +105,7 @@ module Tinypacker
 
     def asset_pack_path(name, **options)
       manifest = Tinypacker.instance.manifest
-      path_to_asset(manifest.lookup(full_pack_name(name, :stylesheet)), options)
+      path_to_asset(manifest.lookup(full_pack_name(name)), options)
     end
 
     def asset_pack_url(name, **options)
@@ -115,8 +115,9 @@ module Tinypacker
 
     private
 
-    def full_pack_name(name, pack_type=nil)
+    def full_pack_name(name, pack_type = nil)
       return name unless File.extname(name.to_s).empty?
+      return name if pack_type.nil?
       "#{name}.#{manifest_type(pack_type)}"
     end
 
